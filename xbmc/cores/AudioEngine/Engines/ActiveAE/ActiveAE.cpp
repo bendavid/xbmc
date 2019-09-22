@@ -1226,8 +1226,9 @@ void CActiveAE::Configure(AEAudioFormat *desiredFmt)
     else if (m_mode == MODE_TRANSCODE)
     {
       outputFormat = inputFormat;
-      outputFormat.m_dataFormat = AE_FMT_FLOATP;
-      outputFormat.m_sampleRate = 48000;
+//       outputFormat.m_dataFormat = AE_FMT_FLOATP;
+// 	  outputFormat.m_dataFormat = inputFormat.m_dataFormat;
+// 	  outputFormat.m_sampleRate = inputFormat.m_sampleRate;
 
       // setup encoder
       if (!m_encoder)
@@ -1254,6 +1255,52 @@ void CActiveAE::Configure(AEAudioFormat *desiredFmt)
         format.m_streamInfo.m_channels = 2;
         format.m_streamInfo.m_sampleRate = 48000;
         format.m_streamInfo.m_ac3FrameSize = m_encoderFormat.m_frames;
+        //! @todo implement
+        if (m_encoderBuffers && initSink)
+        {
+          m_discardBufferPools.push_back(m_encoderBuffers);
+          m_encoderBuffers = NULL;
+        }
+        if (!m_encoderBuffers)
+        {
+          m_encoderBuffers = new CActiveAEBufferPool(format);
+          m_encoderBuffers->Create(MAX_WATER_LEVEL*1000);
+        }
+      }
+      else if (m_encoder->GetCodecID() == AV_CODEC_ID_EAC3)
+      {
+        AEAudioFormat format;
+        format.m_channelLayout += AE_CH_FC;
+        format.m_dataFormat = AE_FMT_RAW;
+        format.m_sampleRate = 192000;
+        format.m_channelLayout = AE_CH_LAYOUT_2_0;
+        format.m_streamInfo.m_type = CAEStreamInfo::STREAM_TYPE_EAC3;
+        format.m_streamInfo.m_channels = 2;
+        format.m_streamInfo.m_sampleRate = 48000;
+        format.m_streamInfo.m_ac3FrameSize = m_encoderFormat.m_frames;
+        //! @todo implement
+        if (m_encoderBuffers && initSink)
+        {
+          m_discardBufferPools.push_back(m_encoderBuffers);
+          m_encoderBuffers = NULL;
+        }
+        if (!m_encoderBuffers)
+        {
+          m_encoderBuffers = new CActiveAEBufferPool(format);
+          m_encoderBuffers->Create(MAX_WATER_LEVEL*1000);
+        }
+      }
+      else if (m_encoder->GetCodecID() == AV_CODEC_ID_TRUEHD)
+      {
+        AEAudioFormat format;
+        format.m_channelLayout += AE_CH_FC;
+        format.m_dataFormat = AE_FMT_S16LE;
+        format.m_sampleRate = 192000;
+        format.m_channelLayout = AE_CH_LAYOUT_7_1;
+        format.m_streamInfo.m_type = CAEStreamInfo::STREAM_TYPE_TRUEHD;
+        format.m_streamInfo.m_channels = 2;
+        format.m_streamInfo.m_sampleRate = 48000;
+//         format.m_streamInfo.m_ac3FrameSize = m_encoderFormat.m_frames;
         //! @todo implement
         if (m_encoderBuffers && initSink)
         {
