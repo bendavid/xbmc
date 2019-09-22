@@ -1226,8 +1226,9 @@ void CActiveAE::Configure(AEAudioFormat *desiredFmt)
     else if (m_mode == MODE_TRANSCODE)
     {
       outputFormat = inputFormat;
-      outputFormat.m_dataFormat = AE_FMT_FLOATP;
-      outputFormat.m_sampleRate = 48000;
+//       outputFormat.m_dataFormat = AE_FMT_FLOATP;
+// 	  outputFormat.m_dataFormat = inputFormat.m_dataFormat;
+// 	  outputFormat.m_sampleRate = inputFormat.m_sampleRate;
 
       // setup encoder
       if (!m_encoder)

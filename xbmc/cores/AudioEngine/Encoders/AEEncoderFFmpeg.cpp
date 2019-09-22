@@ -7,6 +7,7 @@
  */
 
 #define AC3_ENCODE_BITRATE 640000
+#define EAC3_ENCODE_BITRATE 6144000
 #define DTS_ENCODE_BITRATE 1411200
 
 #include "cores/AudioEngine/Encoders/AEEncoderFFmpeg.h"
@@ -81,18 +82,39 @@ bool CAEEncoderFFmpeg::Initialize(AEAudioFormat &format, bool allow_planar_input
 {
   Reset();
 
+  bool truehd = CServiceBroker::GetSettingsComponent()->GetSettings()->GetBool(CSettings::SETTING_AUDIOOUTPUT_TRUEHDPASSTHROUGH);
+  bool eac3 = CServiceBroker::GetSettingsComponent()->GetSettings()->GetBool(CSettings::SETTING_AUDIOOUTPUT_EAC3PASSTHROUGH);
   bool ac3 = CServiceBroker::GetSettingsComponent()->GetSettings()->GetBool(CSettings::SETTING_AUDIOOUTPUT_AC3PASSTHROUGH);
 
   AVCodec *codec = NULL;
 
   /* fallback to ac3 if we support it, we might not have DTS support */
-  if (!codec && ac3)
+  
+  if (truehd) {
+    m_CodeName = "TRUEHD";
+    m_CodecID = AV_CODEC_ID_TRUEHD;
+    //truehd is limited to 6ch (channel limitation is on ffmpeg side rather than format limitation)
+    format.m_channelLayout = AV_CH_LAYOUT_5POINT1_BACK;
+  }
+  else if (eac3) {
+    m_CodeName = "EAC3";
+    m_CodecID = AV_CODEC_ID_EAC3;
+    m_BitRate = EAC3_ENCODE_BITRATE;
+    //eac3 is limited to 48khz 6ch (channel limitation is on ffmpeg side rather than format limitation)
+    format.m_sample_rate = 48000;
+    format.m_channelLayout = AV_CH_LAYOUT_5POINT1_BACK;
+  }  
+  else if (ac3)
   {
     m_CodecName = "AC3";
     m_CodecID = AV_CODEC_ID_AC3;
     m_BitRate = AC3_ENCODE_BITRATE;
-    codec = avcodec_find_encoder(m_CodecID);
+    //ac3 is limited to 6ch 48khz 16 bit
+    format.m_sample_rate = 48000;
+    format.m_channelLayout = AV_CH_LAYOUT_5POINT1_BACK;
   }
+  
+  codec = avcodec_find_encoder(m_CodecID);
 
   /* check we got the codec */
   if (!codec)
@@ -104,7 +126,7 @@ bool CAEEncoderFFmpeg::Initialize(AEAudioFormat &format, bool allow_planar_input
 
   m_CodecCtx->bit_rate = m_BitRate;
   m_CodecCtx->sample_rate = format.m_sampleRate;
-  m_CodecCtx->channel_layout = AV_CH_LAYOUT_5POINT1_BACK;
+  m_CodecCtx->channel_layout = format.m_channelLayout;
 
   /* select a suitable data format */
   if (codec->sample_fmts)
