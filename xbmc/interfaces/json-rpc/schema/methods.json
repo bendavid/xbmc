@@ -2342,6 +2342,17 @@
     ],
     "returns": "string"
   },
+  "Input.Button": {
+    "type": "method",
+    "description": "Send a button press event",
+    "transport": "Response",
+    "permission": "Navigate",
+    "params": [
+      { "name": "button", "type": "string", "required": true, "description": "Button name" },
+      { "name": "keymap", "type": "string", "required": true, "description": "Keymap name (KB, XG, R1, or R2)" }
+    ],
+    "returns": "string"
+  },
   "Input.Left": {
     "type": "method",
     "description": "Navigate left in GUI",

@@ -15,6 +15,10 @@
 #include "guilib/GUIWindowManager.h"
 #include "input/Key.h"
 #include "input/actions/ActionTranslator.h"
+#include "input/GamepadTranslator.h"
+#include "input/IRTranslator.h"
+#include "input/KeyboardTranslator.h"
+#include "input/InputManager.h"
 #include "messaging/ApplicationMessenger.h"
 #include "utils/Variant.h"
 
@@ -82,6 +86,45 @@ JSONRPC_STATUS CInputOperations::ExecuteAction(const std::string &method, ITrans
     return InvalidParams;
 
   return SendAction(action);
+}
+
+JSONRPC_STATUS CInputOperations::Button(const std::string &method, ITransportLayer *transport, IClient *client, const CVariant &parameterObject, CVariant &result)
+{
+  std::string button = parameterObject["button"].asString();
+  std::string keymap = parameterObject["keymap"].asString();
+
+  int keycode = 0;
+  if ( keymap.compare("KB") == 0 ) // standard keyboard map
+  {
+  keycode = CKeyboardTranslator::TranslateString( button.c_str() );
+  }
+  else if  ( keymap.compare("XG") == 0 ) // xbox gamepad map
+  {
+  keycode = CGamepadTranslator::TranslateString( button.c_str() );
+  }
+  else if  ( keymap.compare("R1") == 0 ) // xbox remote map
+  {
+  keycode = CIRTranslator::TranslateString( button.c_str() );
+  }
+  else if  ( keymap.compare("R2") == 0 ) // xbox universal remote map
+  {
+  keycode = CIRTranslator::TranslateUniversalRemoteString( button.c_str() );
+  }
+  else
+  {
+    return InvalidParams;
+  }
+  
+  XBMC_Event newEvent;
+  newEvent.type = XBMC_BUTTON;
+  newEvent.keybutton.button = keycode;
+  newEvent.keybutton.holdtime = 0;
+  
+  CInputManager &inputmanager = CServiceBroker::GetInputManager();
+  inputmanager.OnEvent(newEvent);
+  
+  return ACK;
+
 }
 
 JSONRPC_STATUS CInputOperations::Left(const std::string &method, ITransportLayer *transport, IClient *client, const CVariant &parameterObject, CVariant &result)
