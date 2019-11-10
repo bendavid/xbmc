@@ -1048,7 +1048,10 @@ msgctxt "#225"
 msgid "Vertical shift"
 msgstr ""
 
-#empty string with id 226
+#: system/settings/settings.xml
+msgctxt "#226"
+msgid "Test patterns..."
+msgstr ""
 
 #: system/settings/settings.xml
 msgctxt "#227"
@@ -19486,7 +19489,11 @@ msgctxt "#36357"
 msgid "Calibrate the user interface by adjusting the overscan. Use this tool if the image being displayed is too large or small for your display."
 msgstr ""
 
-#empty string with id 36358
+#. Description of setting with label #226 "Test patterns..."
+#: system/settings/settings.xml
+msgctxt "#36358"
+msgid "Test patterns for display hardware calibration."
+msgstr ""
 
 #. Description of setting with label #36042 "Use limited colour range (16-235)"
 #: system/settings/settings.xml
