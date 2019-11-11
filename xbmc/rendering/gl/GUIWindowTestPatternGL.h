@@ -19,13 +19,8 @@ public:
   ~CGUIWindowTestPatternGL(void) override;
 
 private:
-  void DrawVerticalLines(int top, int left, int bottom, int right) override;
-  void DrawHorizontalLines(int top, int left, int bottom, int right) override;
-  void DrawCheckers(int top, int left, int bottom, int right) override;
-  void DrawBouncingRectangle(int top, int left, int bottom, int right) override;
-  void DrawContrastBrightnessPattern(int top, int left, int bottom, int right) override;
-  void DrawCircle(int originX, int originY, int radius) override;
-  void BeginRender() override;
+  void BeginRender(float bkgcolour[4]) override;
+  void DrawRectangle(float x1, float y1, float x2, float y2, float colour[4]) override;
   void EndRender() override;
 };
 

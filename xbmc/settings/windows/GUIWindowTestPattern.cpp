@@ -12,113 +12,55 @@
 #include "guilib/GUIMessage.h"
 #include "guilib/WindowIDs.h"
 #include "windowing/WinSystem.h"
+#include "utils/Variant.h"
+#include <iostream>
 
 
 CGUIWindowTestPattern::CGUIWindowTestPattern(void)
     : CGUIWindow(WINDOW_TEST_PATTERN, "")
 {
-  m_pattern = 0;
-  m_bounceX = 0;
-  m_bounceY = 0;
-  m_bounceDirectionX = 0;
-  m_bounceDirectionY = 0;
-  m_blinkFrame = 0;
-  m_needsScaling = false;
+
+  std::map<std::string, CVariant> tpgParams;
+  tpgParams["r"] = 0.;
+  tpgParams["g"] = 0.;
+  tpgParams["b"] = 0.;
+  tpgParams["bkg_r"] = 0.2;
+  tpgParams["bkg_g"] = 0.2;
+  tpgParams["bkg_b"] = 0.2;
+  tpgParams["x"] = 0.5*(1.-sqrt(0.1));
+  tpgParams["y"] = 0.5*(1.-sqrt(0.1));
+  tpgParams["w"] = sqrt(0.1);
+  tpgParams["h"] = sqrt(0.1);
+  
+  SetProperty("tpgParams",tpgParams);
 }
 
 CGUIWindowTestPattern::~CGUIWindowTestPattern(void) = default;
 
-
-bool CGUIWindowTestPattern::OnAction(const CAction &action)
-{
-  switch (action.GetID())
-  {
-  case ACTION_MOVE_UP:
-  case ACTION_MOVE_LEFT:
-    m_pattern = m_pattern > 0 ? m_pattern - 1 : TEST_PATTERNS_COUNT - 1;
-    SetInvalid();
-    return true;
-
-  case ACTION_MOVE_DOWN:
-  case ACTION_MOVE_RIGHT:
-    m_pattern = (m_pattern + 1) % TEST_PATTERNS_COUNT;
-    SetInvalid();
-    return true;
-  }
-  return CGUIWindow::OnAction(action); // base class to handle basic movement etc.
-}
-
-bool CGUIWindowTestPattern::OnMessage(CGUIMessage& message)
-{
-  switch (message.GetMessage())
-  {
-  case GUI_MSG_WINDOW_INIT:
-    m_pattern = 0;
-    m_bounceDirectionX = 1;
-    m_bounceDirectionY = 1;
-    m_bounceX = 0;
-    m_bounceY = 0;
-    m_blinkFrame = 0;
-    break;
-
-  }
-  return CGUIWindow::OnMessage(message);
-}
-
 void CGUIWindowTestPattern::Process(unsigned int currentTime, CDirtyRegionList &dirtyregions)
 {
-  if (m_pattern == 0 || m_pattern == 4)
-    MarkDirtyRegion();
+  //*TODO* Update only on demand
+  MarkDirtyRegion();
   CGUIWindow::Process(currentTime, dirtyregions);
   m_renderRegion.SetRect(0, 0, (float)CServiceBroker::GetWinSystem()->GetGfxContext().GetWidth(), (float)CServiceBroker::GetWinSystem()->GetGfxContext().GetHeight());
 
-#ifndef HAS_DX
-  if(CServiceBroker::GetWinSystem()->UseLimitedColor())
-  {
-    m_white = 235.0f / 255;
-    m_black =  16.0f / 255;
-  }
-  else
-#endif
-  {
-    m_white = 1.0f;
-    m_black = 0.0f;
-  }
 }
 
 void CGUIWindowTestPattern::Render()
 {
-  BeginRender();
-  const RESOLUTION_INFO info = CServiceBroker::GetWinSystem()->GetGfxContext().GetResInfo();
+  const CVariant& tpgParams = GetProperty("tpgParams");
 
-  int top    = info.Overscan.top;
-  int bottom = info.Overscan.bottom;
-  int left   = info.Overscan.left;
-  int right  = info.Overscan.right;
+  float bkgcolour[4] = {tpgParams["bkg_r"].asFloat(), tpgParams["bkg_g"].asFloat(), tpgParams["bkg_b"].asFloat(), 1.};
+  float colour[4]  = {tpgParams["r"].asFloat(), tpgParams["g"].asFloat(), tpgParams["b"].asFloat(), 1.};
+  float x1 = 2.*tpgParams["x"].asFloat() - 1.;
+  float y1 = 2.*tpgParams["y"].asFloat() - 1.;
+  float w = 2.*tpgParams["w"].asFloat();
+  float h = 2.*tpgParams["h"].asFloat();
+  float x2 = x1 + w;
+  float y2 = y1 + h;
 
-  switch (m_pattern)
-  {
-    case 0:
-      DrawContrastBrightnessPattern(top, left, bottom, right);
-      break;
-
-    case 1:
-      DrawVerticalLines(top, left, bottom, right);
-      break;
-
-    case 2:
-      DrawHorizontalLines(top, left, bottom, right);
-      break;
-
-    case 3:
-      DrawCheckers(top, left, bottom, right);
-      break;
-
-    case 4:
-      DrawBouncingRectangle(top, left, bottom, right);
-      break;
-  }
-
+  BeginRender(bkgcolour);
+  DrawRectangle(x1, y1, x2, y2, colour);
   EndRender();
 
   CGUIWindow::Render();
