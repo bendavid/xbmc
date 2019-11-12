@@ -102,13 +102,12 @@ JSONRPC_STATUS CInputOperations::ButtonEvent(const std::string& method,
     return InvalidParams;
   }
 
-  XBMC_Event newEvent;
-  newEvent.type = XBMC_BUTTON;
-  newEvent.keybutton.button = keycode;
-  newEvent.keybutton.holdtime = holdtime;
+  XBMC_Event* newEvent = new XBMC_Event;
+  newEvent->type = XBMC_BUTTON;
+  newEvent->keybutton.button = keycode;
+  newEvent->keybutton.holdtime = holdtime;
 
-  CInputManager& inputmanager = CServiceBroker::GetInputManager();
-  inputmanager.OnEvent(newEvent);
+  CApplicationMessenger::GetInstance().PostMsg(TMSG_EVENT, -1, -1, static_cast<void*>(newEvent));
 
   return ACK;
 }
