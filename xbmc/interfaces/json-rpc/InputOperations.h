@@ -19,7 +19,12 @@ namespace JSONRPC
   public:
     static JSONRPC_STATUS SendText(const std::string &method, ITransportLayer *transport, IClient *client, const CVariant &parameterObject, CVariant &result);
     static JSONRPC_STATUS ExecuteAction(const std::string &method, ITransportLayer *transport, IClient *client, const CVariant &parameterObject, CVariant &result);
-    static JSONRPC_STATUS ButtonEvent(const std::string &method, ITransportLayer *transport, IClient *client, const CVariant &parameterObject, CVariant &result);
+
+    static JSONRPC_STATUS ButtonEvent(const std::string& method,
+                                      ITransportLayer* transport,
+                                      IClient* client,
+                                      const CVariant& parameterObject,
+                                      CVariant& result);
 
     static JSONRPC_STATUS Left(const std::string &method, ITransportLayer *transport, IClient *client, const CVariant &parameterObject, CVariant &result);
     static JSONRPC_STATUS Right(const std::string &method, ITransportLayer *transport, IClient *client, const CVariant &parameterObject, CVariant &result);
