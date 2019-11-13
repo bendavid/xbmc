@@ -94,7 +94,7 @@ JSONRPC_STATUS CInputOperations::ButtonEvent(const std::string& method,
 {
   std::string button = parameterObject["button"].asString();
   std::string keymap = parameterObject["keymap"].asString();
-  int holdtime = (int)parameterObject["holdtime"].asInteger();
+  int holdtime = parameterObject["holdtime"].asInteger();
 
   uint32_t keycode = CButtonTranslator::TranslateString(keymap, button);
   if (keycode == 0)
