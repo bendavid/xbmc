@@ -9,24 +9,10 @@
 #pragma once
 
 #include "guilib/GUIWindow.h"
-#include <atomic>
 
 #define TEST_PATTERNS_COUNT 5
 #define TEST_PATTERNS_BOUNCE_SQUARE_SIZE 100
 #define TEST_PATTERNS_BLINK_CYCLE 100
-
-// struct TPGParams {
-//   float r;
-//   float g;
-//   float b;
-//   float bkg_r;
-//   float bkg_g;
-//   float bkg_b;
-//   float x;
-//   float y;
-//   float w;
-//   float h;
-// }
 
 class CGUIWindowTestPattern : public CGUIWindow
 {
@@ -41,7 +27,6 @@ protected:
   virtual void DrawRectangle(float x1, float y1, float x2, float y2, float colour[4]) = 0;
   virtual void EndRender() = 0;
 
-//   std::atomic<TPGParams> m_tpgParams;
 };
 
 
