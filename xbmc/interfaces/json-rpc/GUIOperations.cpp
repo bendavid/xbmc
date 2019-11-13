@@ -169,24 +169,7 @@ CVariant CGUIOperations::GetStereoModeObjectFromGuiMode(const RENDER_STEREO_MODE
 
 JSONRPC_STATUS CGUIOperations::SetWindowProperty(const std::string& method, ITransportLayer* transport, IClient* client, const CVariant& parameterObject, CVariant& result)
 {
-  printf("SetWindowProperty\n");
-  
-//   const std::string& key = parameterObject["key"].asString();
-//   const CVariant& value = parameterObject["value"];
-//   std::pair<std::string, CVariant>* keyvalue = new std::pair<std::string, CVariant>(key, value);
-//   
-//   int iWindow = -1;
-//   if (parameterObject.isMember("window"))
-//   {
-//     iWindow = CWindowTranslator::TranslateWindow(parameterObject["window"].asString());
-//   }
-//   printf("window = %s\n",parameterObject["window"].asString().c_str());
-//   printf("iWindow = %i\n", iWindow);
-  
-//   CApplicationMessenger::GetInstance().PostMsg(TMSG_GUI_SETPROPERTY, iWindow, -1, static_cast<void*>(keyvalue));
-  
   CApplicationMessenger::GetInstance().PostMsg(TMSG_GUI_SETPROPERTY, -1, -1, static_cast<void*>(new CVariant(parameterObject)));
-  
+
   return ACK;
-  
 }

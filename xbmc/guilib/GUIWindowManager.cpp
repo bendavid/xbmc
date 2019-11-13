@@ -1029,18 +1029,16 @@ void CGUIWindowManager::OnApplicationMessage(ThreadMessage* pMsg)
         iWindowID = GetActiveWindowOrDialog();
         printf("iWindowID = %i\n", iWindowID);
       }
-    
-      
+
       CGUIWindow *pNewWindow = GetWindow(iWindowID);
       if (pNewWindow) {
-        printf("setting property with key = %s\n",key.c_str());
         pNewWindow->SetProperty(key,value);
       }
       else
       { // nothing to see here - move along
         CLog::Log(LOGERROR, "Unable to locate window with id %d.  Check skin files", iWindowID - WINDOW_HOME);
       }
-      
+
       delete params;
     }
     
