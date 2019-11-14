@@ -21,6 +21,7 @@ class CGUITextureD3D : public CGUITextureBase
 public:
   CGUITextureD3D(float posX, float posY, float width, float height, const CTextureInfo& texture);
   ~CGUITextureD3D();
+  static void DrawQuad(const CRect &coords, UTILS::Color4f color, CBaseTexture *texture = NULL, const CRect *texCoords = NULL);
   static void DrawQuad(const CRect &coords, UTILS::Color color, CBaseTexture *texture = NULL, const CRect *texCoords = NULL);
 
 protected:

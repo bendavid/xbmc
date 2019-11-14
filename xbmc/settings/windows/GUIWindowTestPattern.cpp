@@ -13,6 +13,8 @@
 #include "guilib/WindowIDs.h"
 #include "windowing/WinSystem.h"
 #include "utils/Variant.h"
+#include "utils/Color.h"
+#include "utils/Geometry.h"
 #include <iostream>
 
 
@@ -50,17 +52,27 @@ void CGUIWindowTestPattern::Render()
 {
   const CVariant& tpgParams = GetProperty("tpgParams");
 
-  float bkgcolour[4] = {tpgParams["bkg_r"].asFloat(), tpgParams["bkg_g"].asFloat(), tpgParams["bkg_b"].asFloat(), 1.};
-  float colour[4]  = {tpgParams["r"].asFloat(), tpgParams["g"].asFloat(), tpgParams["b"].asFloat(), 1.};
-  float x1 = 2.*tpgParams["x"].asFloat() - 1.;
-  float y1 = 2.*tpgParams["y"].asFloat() - 1.;
-  float w = 2.*tpgParams["w"].asFloat();
-  float h = 2.*tpgParams["h"].asFloat();
+  UTILS::Color4f bkgcolor(tpgParams["bkg_r"].asFloat(), tpgParams["bkg_g"].asFloat(), tpgParams["bkg_b"].asFloat(), 1.);
+  UTILS::Color4f color(tpgParams["r"].asFloat(), tpgParams["g"].asFloat(), tpgParams["b"].asFloat(), 1.);
+  float x1 = tpgParams["x"].asFloat();
+  float y1 = tpgParams["y"].asFloat();
+  float w = tpgParams["w"].asFloat();
+  float h = tpgParams["h"].asFloat();
   float x2 = x1 + w;
   float y2 = y1 + h;
 
-  BeginRender(bkgcolour);
-  DrawRectangle(x1, y1, x2, y2, colour);
+  float ww = CServiceBroker::GetWinSystem()->GetGfxContext().GetWidth();
+  float wh = CServiceBroker::GetWinSystem()->GetGfxContext().GetHeight();
+  
+  x1 *= ww;
+  y1 *= wh;
+  x2 *= ww;
+  y2 *= wh;
+  
+  CRect rect(x1,y1,x2,y2);
+  
+  BeginRender(bkgcolor);
+  DrawRectangle(rect, color);
   EndRender();
 
   CGUIWindow::Render();

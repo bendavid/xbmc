@@ -39,13 +39,19 @@ CGUIWindowTestPatternDX::~CGUIWindowTestPatternDX(void)
   m_bufferWidth = 0;
 }
 
-void CGUIWindowTestPatternDX::BeginRender(float bkgcolour[4])
+void CGUIWindowTestPatternDX::BeginRender(UTILS::Color4f bkgcolor)
 {
   ComPtr<ID3D11DeviceContext> pContext = DX::DeviceResources::Get()->GetD3DContext();
   ID3D11RenderTargetView* renderTarget;
 
+  XMFLOAT4 float4;
+  float4.x = bkgcolor.r();
+  float4.y = bkgcolor.g();
+  float4.z = bkgcolor.b();
+  float4.w = bkgcolor.a();
+  
   pContext->OMGetRenderTargets(1, &renderTarget, NULL);
-  pContext->ClearRenderTargetView(renderTarget, bkgcolour);
+  pContext->ClearRenderTargetView(renderTarget, float4);
   renderTarget->Release();
 }
 
@@ -54,13 +60,18 @@ void CGUIWindowTestPatternDX::EndRender()
   DX::Windowing()->GetGUIShader()->RestoreBuffers();
 }
 
-void CGUIWindowTestPatternDX::DrawRectangle(float x, float y, float x2, float y2, float colour[4])
+void CGUIWindowTestPatternDX::DrawRectangle(CRect &rect, UTILS::Color4f color)
 {
   XMFLOAT4 float4;
-  float4.x = colour[0];
-  float4.y = colour[1];
-  float4.z = colour[2];
-  float4.w = colour[3];
+  float4.x = color.r();
+  float4.y = color.g();
+  float4.z = color.b();
+  float4.w = color.a();
+  
+  float x = rect.x1;
+  float y = rect.y1;
+  float x2 = rect.x2;
+  float y2 = rect.y2;
 
   Vertex vert[] =
   {

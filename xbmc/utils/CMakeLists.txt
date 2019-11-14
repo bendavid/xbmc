@@ -11,6 +11,7 @@ set(SOURCES ActorProtocol.cpp
             BooleanLogic.cpp
             CharsetConverter.cpp
             CharsetDetection.cpp
+            Color.cpp
             ColorUtils.cpp
             CPUInfo.cpp
             Crc32.cpp

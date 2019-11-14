@@ -14,6 +14,25 @@ namespace UTILS
 {
 
   typedef uint32_t Color;
+  
+  class Color4f
+  {
+    
+  public:
+    Color4f(float r, float g, float b, float a);
+    Color4f(UTILS::Color col);
+    
+    float r() { return m_r; }
+    float g() { return m_g; }
+    float b() { return m_b; }
+    float a() { return m_a; }
+  protected:
+    float m_r;
+    float m_g;
+    float m_b;
+    float m_a;
+    
+  };
 
 namespace COLOR
 {

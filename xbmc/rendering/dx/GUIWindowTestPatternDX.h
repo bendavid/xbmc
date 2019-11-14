@@ -12,6 +12,8 @@
 
 #include "settings/windows/GUIWindowTestPattern.h"
 #include "guilib/GUIShaderDX.h"
+#include "utils/Geometry.h"
+#include "utils/Color.h"
 
 #include <wrl/client.h>
 
@@ -22,8 +24,8 @@ public:
   virtual ~CGUIWindowTestPatternDX(void);
 
 protected:
-  void BeginRender(float bkgcolour[4]) override;
-  void DrawRectangle(float x, float y, float x2, float y2, float colour[4]) override;
+  void BeginRender(UTILS::Color4f bkgcolor) override;
+  void DrawRectangle(CRect &rect, UTILS::Color4f color) override;
   void EndRender() override;
 
 private:

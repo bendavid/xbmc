@@ -10,7 +10,11 @@
 
 #include "system_gl.h"
 #include "GUIWindowTestPatternGL.h"
-#include "utils/Variant.h"
+#include "guilib/GUITextureGL.h"
+#include "utils/GLUtils.h"
+#include "utils/Geometry.h"
+#include "rendering/gl/RenderSystemGL.h"
+#include "utils/Color.h"
 
 CGUIWindowTestPatternGL::CGUIWindowTestPatternGL(void) : CGUIWindowTestPattern()
 {
@@ -18,18 +22,15 @@ CGUIWindowTestPatternGL::CGUIWindowTestPatternGL(void) : CGUIWindowTestPattern()
 
 CGUIWindowTestPatternGL::~CGUIWindowTestPatternGL(void) = default;
 
-void CGUIWindowTestPatternGL::BeginRender(float bkgcolour[4])
+void CGUIWindowTestPatternGL::BeginRender(UTILS::Color4f bkgcolor)
 {
-  glClearColor(bkgcolour[0], bkgcolour[1], bkgcolour[2], bkgcolour[3]);
-  glDisable(GL_TEXTURE_2D);
-  glDisable(GL_BLEND);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  CRenderSystemGL *renderSystem = dynamic_cast<CRenderSystemGL*>(CServiceBroker::GetRenderSystem());
+  renderSystem->ClearBuffers(bkgcolor);
 }
 
-void CGUIWindowTestPatternGL::DrawRectangle(float x1, float y1, float x2, float y2, float colour[4])
+void CGUIWindowTestPatternGL::DrawRectangle(CRect &rect, UTILS::Color4f color)
 {
-  glColor4f(colour[0], colour[1], colour[2], colour[3]);
-  glRectf(x1,y1,x2,y2);
+  CGUITextureGL::DrawQuad(rect, color);
 }
 
 void CGUIWindowTestPatternGL::EndRender()

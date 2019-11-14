@@ -124,7 +124,7 @@ void CGUITextureD3D::Draw(float *x, float *y, float *z, const CRect &texture, co
   pGUIShader->DrawQuad(verts[0], verts[1], verts[2], verts[3]);
 }
 
-void CGUITextureD3D::DrawQuad(const CRect &rect, UTILS::Color color, CBaseTexture *texture, const CRect *texCoords)
+void CGUITextureD3D::DrawQuad(const CRect &rect, UTILS::Color4f color, CBaseTexture *texture, const CRect *texCoords)
 {
   unsigned numViews = 0;
   ID3D11ShaderResourceView* views = nullptr;
@@ -137,4 +137,9 @@ void CGUITextureD3D::DrawQuad(const CRect &rect, UTILS::Color color, CBaseTextur
   }
 
   CD3DTexture::DrawQuad(rect, color, numViews, &views, texCoords, texture ? SHADER_METHOD_RENDER_TEXTURE_BLEND : SHADER_METHOD_RENDER_DEFAULT);
+}
+
+void CGUITextureD3D::DrawQuad(const CRect &rect, UTILS::Color color, CBaseTexture *texture, const CRect *texCoords)
+{
+  DrawQuad(rect, UTILS::Color4f(color), texture, texCoords);
 }

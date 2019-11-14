@@ -19,8 +19,7 @@ public:
   ~CGUIWindowTestPatternGL(void) override;
 
 private:
-  void BeginRender(float bkgcolour[4]) override;
-  void DrawRectangle(float x1, float y1, float x2, float y2, float colour[4]) override;
+  void BeginRender(UTILS::Color4f bkgcolor) override;
+  void DrawRectangle(CRect &rect, UTILS::Color4f color) override;
   void EndRender() override;
 };
-
