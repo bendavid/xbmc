@@ -15,7 +15,7 @@
 #include "utils/Geometry.h"
 #include "utils/Color.h"
 
-CGUIWindowTestPatternGLES::CGUIWindowTestPatternGL(void) : CGUIWindowTestPattern()
+CGUIWindowTestPatternGLES::CGUIWindowTestPatternGLES(void) : CGUIWindowTestPattern()
 {
 }
 
