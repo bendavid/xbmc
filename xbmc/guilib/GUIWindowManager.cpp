@@ -45,7 +45,7 @@
 #include "rendering/gl/GUIWindowTestPatternGL.h"
 #endif
 #ifdef HAS_GLES
-#include "rendering/gl/GUIWindowTestPatternGLES.h"
+#include "rendering/gles/GUIWindowTestPatternGLES.h"
 #endif
 #ifdef HAS_DX
 #include "rendering/dx/GUIWindowTestPatternDX.h"
