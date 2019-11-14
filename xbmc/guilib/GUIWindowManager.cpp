@@ -44,6 +44,9 @@
 #ifdef HAS_GL
 #include "rendering/gl/GUIWindowTestPatternGL.h"
 #endif
+#ifdef HAS_GLES
+#include "rendering/gl/GUIWindowTestPatternGLES.h"
+#endif
 #ifdef HAS_DX
 #include "rendering/dx/GUIWindowTestPatternDX.h"
 #endif
@@ -185,6 +188,9 @@ void CGUIWindowManager::CreateWindows()
   Add(new CGUIWindowSystemInfo);
 #ifdef HAS_GL
   Add(new CGUIWindowTestPatternGL);
+#endif
+#ifdef HAS_GLES
+  Add(new CGUIWindowTestPatternGLES);
 #endif
 #ifdef HAS_DX
   Add(new CGUIWindowTestPatternDX);
