@@ -13,7 +13,6 @@
 #include "guilib/GUITextureGLES.h"
 #include "utils/GLUtils.h"
 #include "utils/Geometry.h"
-#include "rendering/gl/RenderSystemGLES.h"
 #include "utils/Color.h"
 
 CGUIWindowTestPatternGLES::CGUIWindowTestPatternGL(void) : CGUIWindowTestPattern()
@@ -21,12 +20,6 @@ CGUIWindowTestPatternGLES::CGUIWindowTestPatternGL(void) : CGUIWindowTestPattern
 }
 
 CGUIWindowTestPatternGLES::~CGUIWindowTestPatternGLES(void) = default;
-
-void CGUIWindowTestPatternGLES::BeginRender(UTILS::Color4f bkgcolor)
-{
-  CRenderSystemGLES *renderSystem = dynamic_cast<CRenderSystemGLES*>(CServiceBroker::GetRenderSystem());
-  renderSystem->ClearBuffers(bkgcolor);
-}
 
 void CGUIWindowTestPatternGLES::DrawRectangle(CRect &rect, UTILS::Color4f color)
 {

@@ -19,7 +19,6 @@ public:
   ~CGUIWindowTestPatternGLES(void) override;
 
 private:
-  void BeginRender(UTILS::Color4f bkgcolor) override;
   void DrawRectangle(CRect &rect, UTILS::Color4f color) override;
   void EndRender() override;
 };

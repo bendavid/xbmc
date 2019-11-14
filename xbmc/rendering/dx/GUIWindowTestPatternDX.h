@@ -24,14 +24,7 @@ public:
   virtual ~CGUIWindowTestPatternDX(void);
 
 protected:
-  void BeginRender(UTILS::Color4f bkgcolor) override;
   void DrawRectangle(CRect &rect, UTILS::Color4f color) override;
   void EndRender() override;
-
-private:
-  void UpdateVertexBuffer(Vertex *vertices, unsigned count);
-
-  unsigned m_bufferWidth;
-  Microsoft::WRL::ComPtr<ID3D11Buffer> m_vb;
 };
 

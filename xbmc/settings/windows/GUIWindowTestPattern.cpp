@@ -71,7 +71,7 @@ void CGUIWindowTestPattern::Render()
   
   CRect rect(x1,y1,x2,y2);
   
-  BeginRender(bkgcolor);
+  CServiceBroker::GetRenderSystem()->ClearBuffers(bkgcolor);
   DrawRectangle(rect, color);
   EndRender();
 

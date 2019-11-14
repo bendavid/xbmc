@@ -23,7 +23,6 @@ public:
   void Process(unsigned int currentTime, CDirtyRegionList &dirtyregions) override;
 
 protected:
-  virtual void BeginRender(UTILS::Color4f bkgcolor) = 0;
   virtual void DrawRectangle(CRect &rect, UTILS::Color4f color) = 0;
   virtual void EndRender() = 0;
 
