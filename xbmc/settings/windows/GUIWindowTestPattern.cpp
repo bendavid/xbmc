@@ -10,6 +10,7 @@
 #include "ServiceBroker.h"
 #include "input/Key.h"
 #include "guilib/GUIMessage.h"
+#include "guilib/GUITexture.h"
 #include "guilib/WindowIDs.h"
 #include "windowing/WinSystem.h"
 #include "utils/Variant.h"
@@ -72,9 +73,8 @@ void CGUIWindowTestPattern::Render()
   CRect rect(x1,y1,x2,y2);
   
   CServiceBroker::GetRenderSystem()->ClearBuffers(bkgcolor);
-  DrawRectangle(rect, color);
-  EndRender();
-
+  CGUITexture::DrawQuad(rect, color);
+  
   CGUIWindow::Render();
 }
 
