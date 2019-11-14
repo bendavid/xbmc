@@ -2388,6 +2388,10 @@
           <level>3</level>
           <control type="button" format="action" />
         </setting>
+        <setting id="videoscreen.testpattern" type="action" label="226" help="36358">
+          <level>3</level>
+          <control type="button" format="action" />
+        </setting>
       </group>
     </category>
     <category id="audio" label="14221" help="36360">
