@@ -1,11 +1,11 @@
 if(OPENGLES_FOUND)
-  set(SOURCES ../gl/GUIWindowTestPatternGL.cpp
+  set(SOURCES GUIWindowTestPatternGLES.cpp
               RenderSystemGLES.cpp
               ScreenshotSurfaceGLES.cpp
               ../MatrixGL.cpp
               GLESShader.cpp)
 
-  set(HEADERS ../gl/GUIWindowTestPatternGL.h
+  set(HEADERS GUIWindowTestPatternGLES.h
               RenderSystemGLES.h
               ScreenshotSurfaceGLES.h
               ../MatrixGL.h
