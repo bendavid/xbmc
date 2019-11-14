@@ -231,7 +231,7 @@ void CGUITextureGL::Draw(float *x, float *y, float *z, const CRect &texture, con
   }
 }
 
-void CGUITextureGL::DrawQuad(const CRect &rect, UTILS::Color color, CBaseTexture *texture, const CRect *texCoords)
+void CGUITextureGL::DrawQuad(const CRect &rect, UTILS::Color4f color, CBaseTexture *texture, const CRect *texCoords)
 {
   CRenderSystemGL *renderSystem = dynamic_cast<CRenderSystemGL*>(CServiceBroker::GetRenderSystem());
   if (texture)
@@ -245,7 +245,6 @@ void CGUITextureGL::DrawQuad(const CRect &rect, UTILS::Color color, CBaseTexture
 
   VerifyGLState();
 
-  GLubyte col[4];
   GLubyte idx[4] = {0, 1, 3, 2};  //determines order of the vertices
   GLuint vertexVBO;
   GLuint indexVBO;
@@ -265,13 +264,7 @@ void CGUITextureGL::DrawQuad(const CRect &rect, UTILS::Color color, CBaseTexture
   GLint tex0Loc = renderSystem->ShaderGetCoord0();
   GLint uniColLoc = renderSystem->ShaderGetUniCol();
 
-  // Setup Colors
-  col[0] = (GLubyte)GET_R(color);
-  col[1] = (GLubyte)GET_G(color);
-  col[2] = (GLubyte)GET_B(color);
-  col[3] = (GLubyte)GET_A(color);
-
-  glUniform4f(uniColLoc, col[0] / 255.0f, col[1] / 255.0f, col[2] / 255.0f, col[3] / 255.0f);
+  glUniform4f(uniColLoc, color.r(), color.g(), color.b(), color.a());
 
   // bottom left
   vertex[0].x = rect.x1;
@@ -333,3 +326,7 @@ void CGUITextureGL::DrawQuad(const CRect &rect, UTILS::Color color, CBaseTexture
   renderSystem->DisableShader();
 }
 
+void CGUITextureGL::DrawQuad(const CRect &rect, UTILS::Color color, CBaseTexture *texture, const CRect *texCoords)
+{
+  DrawQuad(rect, UTILS::Color4f(color), texture, texCoords);
+}

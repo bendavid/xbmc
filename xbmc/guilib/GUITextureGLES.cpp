@@ -215,7 +215,7 @@ void CGUITextureGLES::Draw(float *x, float *y, float *z, const CRect &texture, c
   }
 }
 
-void CGUITextureGLES::DrawQuad(const CRect &rect, UTILS::Color color, CBaseTexture *texture, const CRect *texCoords)
+void CGUITextureGLES::DrawQuad(const CRect &rect, UTILS::Color4f color, CBaseTexture *texture, const CRect *texCoords)
 {
   CRenderSystemGLES *renderSystem = dynamic_cast<CRenderSystemGLES*>(CServiceBroker::GetRenderSystem());
   if (texture)
@@ -229,7 +229,6 @@ void CGUITextureGLES::DrawQuad(const CRect &rect, UTILS::Color color, CBaseTextu
 
   VerifyGLState();
 
-  GLubyte col[4];
   GLfloat ver[4][3];
   GLfloat tex[4][2];
   GLubyte idx[4] = {0, 1, 3, 2};        //determines order of triangle strip
@@ -251,13 +250,7 @@ void CGUITextureGLES::DrawQuad(const CRect &rect, UTILS::Color color, CBaseTextu
   if (texture)
     glEnableVertexAttribArray(tex0Loc);
 
-  // Setup Colors
-  col[0] = (GLubyte)GET_R(color);
-  col[1] = (GLubyte)GET_G(color);
-  col[2] = (GLubyte)GET_B(color);
-  col[3] = (GLubyte)GET_A(color);
-
-  glUniform4f(uniColLoc, col[0] / 255.0f, col[1] / 255.0f, col[2] / 255.0f, col[3] / 255.0f);
+  glUniform4f(uniColLoc, color.r(), color.g(), color.b(), color.a());
 
   ver[0][0] = ver[3][0] = rect.x1;
   ver[0][1] = ver[1][1] = rect.y1;
@@ -283,3 +276,7 @@ void CGUITextureGLES::DrawQuad(const CRect &rect, UTILS::Color color, CBaseTextu
   renderSystem->DisableGUIShader();
 }
 
+void CGUITextureGLES::DrawQuad(const CRect &rect, UTILS::Color color, CBaseTexture *texture, const CRect *texCoords)
+{
+  DrawQuad(rect, UTILS::Color4f(color), texture, texCoords);
+}
