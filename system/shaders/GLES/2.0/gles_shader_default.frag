@@ -21,7 +21,7 @@
 #version 100
 
 precision mediump float;
-uniform lowp vec4 m_unicol;
+uniform highp vec4 m_unicol;
 
 void main ()
 {

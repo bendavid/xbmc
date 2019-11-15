@@ -22,7 +22,7 @@
 
 precision mediump float;
 uniform sampler2D m_samp0;
-uniform lowp vec4 m_unicol;
+uniform highp vec4 m_unicol;
 varying vec4 m_cord0;
 
 void main ()
