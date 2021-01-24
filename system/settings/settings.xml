@@ -2480,6 +2480,82 @@
           </dependencies>
           <control type="toggle" />
         </setting>
+        <setting id="coreelec.amlogic.colordepth" type="integer" parent="videoscreen.screen" label="14286" help="14287">
+          <requirement>HAVE_AMCODEC</requirement>
+          <default>0</default> <!-- AUTO -->
+          <constraints>
+            <options>
+              <option label="16316">0</option> <!-- AUTO -->
+              <option label="14292">1</option> <!-- 8 bit -->
+              <option label="14293">2</option> <!-- 10 bit -->
+              <option label="14294">3</option> <!-- 12 bit -->
+              <option label="14295">4</option> <!-- 16 bit -->
+            </options>
+          </constraints>
+          <control type="list" format="string" />
+        </setting>
+        <setting id="coreelec.amlogic.forcecolorfmt" type="integer" parent="videoscreen.screen" label="39154" help="39155">
+          <requirement>HAVE_AMCODEC</requirement>
+          <default>0</default> <!-- AUTO -->
+          <constraints>
+            <options>
+              <option label="16316">0</option> <!-- AUTO -->
+              <option label="39156">1</option> <!-- YUV420 -->
+              <option label="39157">2</option> <!-- YUV422 -->
+              <option label="39158">3</option> <!-- YUV444 -->
+              <option label="39159">4</option> <!-- RGB -->
+            </options>
+          </constraints>
+          <control type="list" format="string" />
+        </setting>
+        <setting id="coreelec.amlogic.outputrange" type="integer" parent="videoscreen.screen" label="14288" help="14289">
+          <requirement>HAVE_AMCODEC</requirement>
+          <default>0</default> <!-- AUTO -->
+          <constraints>
+            <options>
+              <option label="16316">0</option> <!-- AUTO -->
+              <option label="14296">1</option> <!-- Limited -->
+              <option label="14297">2</option> <!-- Full -->
+            </options>
+          </constraints>
+          <control type="list" format="string" />
+        </setting>
+        <setting id="coreelec.amlogic.dynamicrange" type="integer" parent="videoscreen.screen" label="39167" help="39168">
+          <requirement>HAVE_AMCODEC</requirement>
+          <default>0</default> <!-- 100 nits BT2020-->
+          <constraints>
+            <options>
+              <option label="16316">0</option> <!-- Auto -->
+              <option label="39169">1</option> <!-- SDR -->
+              <option label="39170">2</option> <!-- HDR Auto -->
+            </options>
+          </constraints>
+          <control type="list" format="string" />
+        </setting>
+        <setting id="coreelec.amlogic.sdr2hdrmap" type="integer" parent="videoscreen.screen" label="39161" help="39162">
+          <requirement>HAVE_AMCODEC</requirement>
+          <default>0</default> <!-- Auto (100 nits) -->
+          <constraints>
+            <options>
+              <option label="39163">0</option> <!-- Auto (100 nits) -->
+              <option label="39164">1</option> <!-- Auto (230 nits) -->
+              <option label="39165">2</option> <!-- Auto (310 nits) -->
+              <option label="39166">3</option> <!-- Passthrough -->
+            </options>
+          </constraints>
+          <control type="list" format="string" />
+        </setting>
+        <setting id="coreelec.amlogic.hdr2sdrmap" type="integer" parent="videoscreen.screen" label="14284" help="14285">
+          <requirement>HAVE_AMCODEC</requirement>
+          <default>0</default> <!-- Auto -->
+          <constraints>
+            <options>
+              <option label="16316">0</option> <!-- Auto -->
+              <option label="39166">1</option> <!-- Passthrough -->
+            </options>
+          </constraints>
+          <control type="list" format="string" />
+        </setting>
         <setting id="coreelec.amlogic.disableguiscaling" type="boolean" parent="videoscreen.screen" label="14290" help="14291">
           <requirement>HAVE_4K_GUI</requirement>
           <default>false</default>
@@ -3388,40 +3464,6 @@
         <setting id="coreelec.amlogic.noisereduction" type="boolean" label="14280" help="14281">
           <requirement>HAVE_AMCODEC</requirement>
           <level>3</level>
-          <default>false</default>
-          <control type="toggle" />
-        </setting>
-        <setting id="coreelec.amlogic.sdr2hdr" type="integer" label="14282" help="14283">
-          <requirement>HAVE_AMCODEC</requirement>
-          <default>0</default> <!-- OFF -->
-          <constraints>
-            <options>
-              <option label="351">0</option> <!-- OFF -->
-              <option label="16041">1</option> <!-- ON -->
-              <option label="16316">2</option> <!-- AUTO -->
-            </options>
-          </constraints>
-          <control type="list" format="string" />
-        </setting>
-        <setting id="coreelec.amlogic.hdr2sdr" type="integer" label="14284" help="14285">
-          <requirement>HAVE_AMCODEC</requirement>
-          <default>2</default> <!-- AUTO -->
-          <constraints>
-            <options>
-              <option label="351">0</option> <!-- OFF -->
-              <option label="16041">1</option> <!-- ON -->
-              <option label="16316">2</option> <!-- AUTO -->
-            </options>
-          </constraints>
-          <control type="list" format="string" />
-        </setting>
-        <setting id="coreelec.amlogic.limit8bit" type="boolean" label="14286" help="14287">
-          <requirement>HAVE_AMCODEC</requirement>
-          <default>false</default>
-          <control type="toggle" />
-        </setting>
-        <setting id="coreelec.amlogic.force422" type="boolean" label="14288" help="14289">
-          <requirement>HAVE_AMCODEC</requirement>
           <default>false</default>
           <control type="toggle" />
         </setting>

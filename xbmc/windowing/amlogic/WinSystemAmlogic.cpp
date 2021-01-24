@@ -90,51 +90,8 @@ bool CWinSystemAmlogic::InitWindowSystem()
      SysfsUtils::SetString("/sys/module/di/parameters/nr2_en", "0");
   }
 
-  int sdr2hdr = settings->GetInt(CSettings::SETTING_COREELEC_AMLOGIC_SDR2HDR);
-  if (sdr2hdr != 0) // Default is Off (0)
-  {
-    CLog::Log(LOGDEBUG, "CWinSystemAmlogic::InitWindowSystem -- setting sdr2hdr mode to %d", sdr2hdr);
-    SysfsUtils::SetInt("/sys/module/am_vecm/parameters/sdr_mode", sdr2hdr);
-  }
-
-  int hdr2sdr = settings->GetInt(CSettings::SETTING_COREELEC_AMLOGIC_HDR2SDR);
-  if (hdr2sdr != 2) // Default is Auto (2)
-  {
-    CLog::Log(LOGDEBUG, "CWinSystemAmlogic::InitWindowSystem -- setting hdr2sdr mode to %d", hdr2sdr);
-    SysfsUtils::SetInt("/sys/module/am_vecm/parameters/hdr_mode", hdr2sdr);
-  }
-
-  std::string attr = "";
-  SysfsUtils::GetString("/sys/class/amhdmitx/amhdmitx0/attr", attr);
-  //We delay writing attr until everything is done with it to avoid multiple display resets.
-  if (CServiceBroker::GetSettingsComponent()->GetSettings()->GetBool(CSettings::SETTING_COREELEC_AMLOGIC_FORCE422))
-  {
-     CLog::Log(LOGDEBUG, "CWinSystemAmlogic::InitWindowSystem -- Setting 422 output");
-     if (attr.find("444") != std::string::npos ||
-         attr.find("422") != std::string::npos ||
-         attr.find("420") != std::string::npos)
-       attr.replace(attr.find("4"),3,"422");
-     else
-       attr.append("422");
-  }
-  if (CServiceBroker::GetSettingsComponent()->GetSettings()->GetBool(CSettings::SETTING_COREELEC_AMLOGIC_LIMIT8BIT))
-  {
-     CLog::Log(LOGDEBUG, "CWinSystemAmlogic::InitWindowSystem -- Limiting display to 8bit colour depth");
-     if (attr.find("10bit") != std::string::npos)
-       attr.replace(attr.find("10bit"),5,"8bit");
-     else if (attr.find("12bit") != std::string::npos)
-       attr.replace(attr.find("12bit"),5,"8bit");
-     else if (attr.find("8bit") != std::string::npos)
-       ; //do nothing
-     else
-       attr.append("8bit");
-  }
-  if (CServiceBroker::GetSettingsComponent()->GetSettings()->GetBool(CSettings::SETTING_COREELEC_AMLOGIC_LIMIT8BIT) ||
-      CServiceBroker::GetSettingsComponent()->GetSettings()->GetBool(CSettings::SETTING_COREELEC_AMLOGIC_FORCE422))
-  {
-     //attr.append("now");
-     SysfsUtils::SetString("/sys/class/amhdmitx/amhdmitx0/attr", attr.c_str());
-  }
+  aml_update_amvecm_params();
+  aml_update_hdmitx_attr();
 
   m_nativeDisplay = EGL_DEFAULT_DISPLAY;
 

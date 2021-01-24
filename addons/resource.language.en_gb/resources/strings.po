@@ -8419,37 +8419,37 @@ msgstr ""
 
 #: system/settings/settings.xml
 msgctxt "#14283"
-msgid "Intended for HDR enabled displays - not recommended. Turn this On or set to Auto to have HDR10 mode always on. GUI and SDR content will be tone mapped. Requires reboot."
+msgid "Intended for HDR enabled displays - not recommended. Turn this On or set to Auto to have HDR10 mode always on. GUI and SDR content will be tone mapped."
 msgstr ""
 
 #: system/settings/settings.xml
 msgctxt "#14284"
-msgid "Tone map HDR to SDR"
+msgid "HDR to SDR Tone Mapping"
 msgstr ""
 
 #: system/settings/settings.xml
 msgctxt "#14285"
-msgid "Intended for SDR displays. Turn this On or set to Auto to have HDR content tone mapped to SDR. This improves color saturation and contrast of HDR content on SDR displays. Requires reboot."
+msgid "Set target brightness and color mapping for HDR to SDR conversion."
 msgstr ""
 
 #: system/settings/settings.xml
 msgctxt "#14286"
-msgid "Limit display colour depth to 8-bit"
+msgid "Color Depth"
 msgstr ""
 
 #: system/settings/settings.xml
 msgctxt "#14287"
-msgid "Enable this to limit the display colour depth to 8-bit. Requires reboot."
+msgid "Set this to choose a preferred color depth. Requires reboot."
 msgstr ""
 
 #: system/settings/settings.xml
 msgctxt "#14288"
-msgid "Use 4:2:2 colour subsampling"
+msgid "Output Range"
 msgstr ""
 
 #: system/settings/settings.xml
 msgctxt "#14289"
-msgid "Enable this to use 4:2:2 colour subsampling. Some displays (usually LG) work better with this. Requires reboot."
+msgid "Set this to choose a preferred output range. Requires reboot."
 msgstr ""
 
 #: system/settings/settings.xml
@@ -8462,7 +8462,31 @@ msgctxt "#14291"
 msgid "For optimal performance across all devices, the GUI is rendered at 1080P and scaled to 4K by default, this option disables that scaling and renders the GUI at 4K. This can make thumbnails and other textures sharper, however some devices may have issues with this option being set. Requires reboot."
 msgstr ""
 
-#empty strings from id 14292 to 14300
+msgctxt "#14292"
+msgid "8 bit"
+msgstr ""
+
+msgctxt "#14293"
+msgid "10 bit"
+msgstr ""
+
+msgctxt "#14294"
+msgid "12 bit"
+msgstr ""
+
+msgctxt "#14295"
+msgid "16 bit"
+msgstr ""
+
+msgctxt "#14296"
+msgid "Limited (16-235)"
+msgstr ""
+
+msgctxt "#14297"
+msgid "Full (0-255)"
+msgstr ""
+
+#empty strings from id 14298 to 14300
 
 #. pvr "channels" settings group label
 #: system/settings/settings.xml
@@ -22616,4 +22640,94 @@ msgstr ""
 #: xbmc/windows/GUIWindowSystemInfo.cpp
 msgctxt "#39153"
 msgid "Windowing system:"
+msgstr ""
+
+#: system/settings/settings.xml
+msgctxt "#39154"
+msgid "Color Format"
+msgstr ""
+
+#: system/settings/settings.xml
+msgctxt "#39155"
+msgid "Select Preferred Color Format. Some displays (usually LG) work better with YUV422."
+msgstr ""
+
+#: system/settings/settings.xml
+msgctxt "#39156"
+msgid "YUV420"
+msgstr ""
+
+#: system/settings/settings.xml
+msgctxt "#39157"
+msgid "YUV422"
+msgstr ""
+
+#: system/settings/settings.xml
+msgctxt "#39158"
+msgid "YUV444"
+msgstr ""
+
+#: system/settings/settings.xml
+msgctxt "#39159"
+msgid "RGB"
+msgstr ""
+
+#: system/settings/settings.xml
+msgctxt "#39160"
+msgid "RGB Full Range"
+msgstr ""
+
+#: system/settings/settings.xml
+msgctxt "#39161"
+msgid "SDR to HDR Tone Mapping"
+msgstr ""
+
+#: system/settings/settings.xml
+msgctxt "#39162"
+msgid "Set target brightness and color mapping for SDR to HDR conversion. Note that this also controls the behaviour of the GUI while playing HDR videos. Requires reboot."
+msgstr ""
+
+#: system/settings/settings.xml
+msgctxt "#39163"
+msgid "Auto (100 nits)"
+msgstr ""
+
+#: system/settings/settings.xml
+msgctxt "#39164"
+msgid "Auto (230 nits)"
+msgstr ""
+
+#: system/settings/settings.xml
+msgctxt "#39165"
+msgid "Auto (310 nits)"
+msgstr ""
+
+#: system/settings/settings.xml
+msgctxt "#39166"
+msgid "Passthrough"
+msgstr ""
+
+#: system/settings/settings.xml
+msgctxt "#39167"
+msgid "Dynamic Range"
+msgstr ""
+
+#: system/settings/settings.xml
+msgctxt "#39168"
+msgid "Select behaviour to switch between SDR and HDR modes.  Strongly recommended to leave this on Auto, to switch automatically based on current source and display capabilities."
+msgstr ""
+
+#: system/settings/settings.xml
+msgctxt "#39169"
+msgid "SDR"
+msgstr ""
+
+#: system/settings/settings.xml
+msgctxt "#39170"
+msgid "HDR (Auto)"
+msgstr ""
+
+#: system/settings/settings.xml
+msgctxt "#39171"
+msgid "Dolby Vision"
 msgstr ""

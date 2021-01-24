@@ -735,3 +735,167 @@ bool aml_unset_reg_ignore_alpha()
   return false;
 }
 
+bool aml_update_hdmitx_attr()
+{
+  // We delay writing attr until everything is done with it to avoid multiple display resets.
+  std::string attr = "";
+  SysfsUtils::GetString("/sys/class/amhdmitx/amhdmitx0/attr", attr);
+  std::string original_attr = attr;
+  
+  int forcecolorfmt = CServiceBroker::GetSettingsComponent()->GetSettings()->GetInt(CSettings::SETTING_COREELEC_AMLOGIC_FORCECOLORFMT);
+  std::string attrfmt = "";
+  if (forcecolorfmt == 1) {
+    attrfmt = "420";
+  }
+  else if (forcecolorfmt == 2) {
+    attrfmt = "422";
+  }
+  else if (forcecolorfmt == 3) {
+    attrfmt = "444";
+  }
+  else if (forcecolorfmt == 4 || forcecolorfmt == 5) {
+    attrfmt = "rgb";
+  }
+  CLog::Log(LOGDEBUG, "CDisplaySettings::update_hdmitx_attr -- Setting Color Format to %s", attrfmt.c_str());
+  if (attr.find("444") != std::string::npos ||
+      attr.find("422") != std::string::npos ||
+      attr.find("420") != std::string::npos) {
+    attr.replace(attr.find("4"),3,attrfmt);
+  }
+  else if (attr.find("rgb") != std::string::npos) {
+    attr.replace(attr.find("rgb"),3,attrfmt.c_str());
+  }
+  else if (attr.find(attrfmt) == std::string::npos) {
+    attr.append(attrfmt);
+  }
+  
+  int outputrange = CServiceBroker::GetSettingsComponent()->GetSettings()->GetInt(CSettings::SETTING_COREELEC_AMLOGIC_OUTPUTRANGE);
+  std::string attr_range = "";
+  if (outputrange == 1) {
+    attr_range = "limit";
+  }
+  else if (outputrange == 2) {
+    attr_range = "full";
+  }
+  CLog::Log(LOGDEBUG, "CDisplaySettings::update_hdmitx_attr -- Setting Output Range to %s", attr_range.c_str());
+  if (attr.find("limit") != std::string::npos) {
+    attr.replace(attr.find("limit"),5,attr_range);
+  }
+  else if (attr.find("full") != std::string::npos) {
+    attr.replace(attr.find("full"),4,attr_range);
+  }
+  else {
+    attr.append(attr_range);
+  }
+  
+  int colordepth =  outputrange = CServiceBroker::GetSettingsComponent()->GetSettings()->GetInt(CSettings::SETTING_COREELEC_AMLOGIC_COLORDEPTH);
+    std::string attr_depth = "";
+  if (colordepth == 1) {
+    attr_depth = "8bit";
+  }
+  else if (colordepth == 2) {
+    attr_depth = "10bit";
+  }
+  else if (colordepth == 3) {
+    attr_depth = "12bit";
+  }
+  else if (colordepth == 4) {
+    attr_depth = "16bit";
+  }
+  CLog::Log(LOGDEBUG, "CDisplaySettings::update_hdmitx_attr -- Setting Color Depth to %s", attr_depth.c_str());
+  
+  if (attr.find("8bit") != std::string::npos) {
+    attr.replace(attr.find("8bit"),4,attr_depth);
+  }
+  else if (attr.find("10bit") != std::string::npos) {
+    attr.replace(attr.find("10bit"),5,attr_depth);
+  }
+  else if (attr.find("12bit") != std::string::npos) {
+    attr.replace(attr.find("12bit"),5,attr_depth);
+  }
+  else if (attr.find("16bit") != std::string::npos) {
+    attr.replace(attr.find("16bit"),5,attr_depth);
+  }
+  else {
+    attr.append(attr_depth);
+  }
+
+  CLog::Log(LOGDEBUG, "CDisplaySettings::update_hdmitx_attr -- Original attr %s", original_attr.c_str());
+  CLog::Log(LOGDEBUG, "CDisplaySettings::update_hdmitx_attr -- attr %s", attr.c_str());
+  if (attr != original_attr) {
+    // attr has changed, write it and trigger an immediate mode switch
+    attr.append("now");
+    SysfsUtils::SetString("/sys/class/amhdmitx/amhdmitx0/attr", attr.c_str());
+    return true;
+  }
+  
+  return false;
+}
+
+bool aml_update_amvecm_params()
+{
+  
+  int dynamicrange = CServiceBroker::GetSettingsComponent()->GetSettings()->GetInt(CSettings::SETTING_COREELEC_AMLOGIC_DYNAMICRANGE);
+  if (dynamicrange == 0) {
+    // auto
+    // don't force output
+    SysfsUtils::SetInt("/sys/module/am_vecm/parameters/force_output", 0);
+    // follow source
+    SysfsUtils::SetInt("/sys/module/amdolby_vision/parameters/dolby_vision_policy", 1);
+    // follow source
+    SysfsUtils::SetInt("/sys/module/am_vecm/parameters/hdr_policy", 1);
+    // sdr->sdr
+    SysfsUtils::SetInt("/sys/module/am_vecm/parameters/sdr_mode", 0);
+    // auto
+    SysfsUtils::SetInt("/sys/module/am_vecm/parameters/hdr_mode", 2);
+  }
+  else if (dynamicrange == 1) {
+    // SDR
+    // force SDR output
+    SysfsUtils::SetInt("/sys/module/am_vecm/parameters/force_output", 1);
+    // follow sink
+    SysfsUtils::SetInt("/sys/module/amdolby_vision/parameters/dolby_vision_policy", 0);
+    // follow sink
+    SysfsUtils::SetInt("/sys/module/am_vecm/parameters/hdr_policy", 0);
+    // sdr->sdr
+    SysfsUtils::SetInt("/sys/module/am_vecm/parameters/sdr_mode", 0);
+    // hdr->sdr
+    SysfsUtils::SetInt("/sys/module/am_vecm/parameters/hdr_mode", 1);
+  }
+  else if (dynamicrange == 2) {
+    // HDR (auto select HDR format)
+    // don't force output
+    SysfsUtils::SetInt("/sys/module/am_vecm/parameters/force_output", 0);
+    // follow sink
+    SysfsUtils::SetInt("/sys/module/amdolby_vision/parameters/dolby_vision_policy", 0);
+    // follow sink
+    SysfsUtils::SetInt("/sys/module/am_vecm/parameters/hdr_policy", 0);
+    // sdr->hdr
+    SysfsUtils::SetInt("/sys/module/am_vecm/parameters/sdr_mode", 1);
+    // auto
+    SysfsUtils::SetInt("/sys/module/am_vecm/parameters/hdr_mode", 2);
+  }
+//   else if (dynamicrange == 3) {
+//     // Dolby Vision
+//     // Force Dolby Vision
+//     SysfsUtils::SetInt("/sys/module/am_vecm/parameters/force_output", 6);
+//     // follow sink
+//     SysfsUtils::SetInt("/sys/module/amdolby_vision/parameters/dolby_vision_policy", 0);
+//     // follow sink
+//     SysfsUtils::SetInt("/sys/module/am_vecm/parameters/hdr_policy", 0);
+//     // sdr->hdr
+//     SysfsUtils::SetInt("/sys/module/am_vecm/parameters/sdr_mode", 1);
+//     // auto
+//     SysfsUtils::SetInt("/sys/module/am_vecm/parameters/hdr_mode", 2);
+//   }
+  
+  int sdr2hdrmap = CServiceBroker::GetSettingsComponent()->GetSettings()->GetInt(CSettings::SETTING_COREELEC_AMLOGIC_SDR2HDRMAP);
+  CLog::Log(LOGDEBUG, "CDisplaySettings::update_amvecm_params -- setting sdr2hdrmap mode to %d", sdr2hdrmap);
+  SysfsUtils::SetInt("/sys/module/am_vecm/parameters/sdr2hdrmap", sdr2hdrmap);
+  
+  int hdr2sdrmap = CServiceBroker::GetSettingsComponent()->GetSettings()->GetInt(CSettings::SETTING_COREELEC_AMLOGIC_HDR2SDRMAP);
+  CLog::Log(LOGDEBUG, "CDisplaySettings::update_amvecm_params -- setting hdr2sdrmap mode to %d", hdr2sdrmap);
+  SysfsUtils::SetInt("/sys/module/am_vecm/parameters/hdr2sdrmap", hdr2sdrmap);
+
+  return true;
+}

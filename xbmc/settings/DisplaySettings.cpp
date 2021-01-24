@@ -39,6 +39,7 @@
 #include "utils/XMLUtils.h"
 #include "rendering/RenderSystem.h"
 #include "windowing/WinSystem.h"
+#include "utils/AMLUtils.h"
 
 #if defined(HAVE_X11)
 #define WIN_SYSTEM_CLASS KODI::WINDOWING::X11::CWinSystemX11
@@ -388,6 +389,44 @@ bool CDisplaySettings::OnSettingChanging(const std::shared_ptr<const CSetting>& 
   {
     const RESOLUTION_INFO res_info = GetResolutionInfo(GetCurrentResolution());
     write_resolution_ini(res_info);
+  }
+  else if ( settingId == CSettings::SETTING_COREELEC_AMLOGIC_FORCECOLORFMT ||
+            settingId == CSettings::SETTING_COREELEC_AMLOGIC_OUTPUTRANGE ||
+            settingId == CSettings::SETTING_COREELEC_AMLOGIC_COLORDEPTH )
+  {
+    bool changed = aml_update_hdmitx_attr();
+    if (changed) {
+      if (!m_resolutionChangeAborted) {
+        if (HELPERS::ShowYesNoDialogText(CVariant{13110}, CVariant{13111}, CVariant{""}, CVariant{""}, 10000) !=
+          DialogResponse::YES)
+        {
+          m_resolutionChangeAborted = true;
+          return false;
+        }
+      }
+      else {
+        m_resolutionChangeAborted = false;
+      }
+    }
+  }
+  else if ( settingId == CSettings::SETTING_COREELEC_AMLOGIC_SDR2HDRMAP ||
+            settingId == CSettings::SETTING_COREELEC_AMLOGIC_HDR2SDRMAP ||
+            settingId == CSettings::SETTING_COREELEC_AMLOGIC_DYNAMICRANGE)
+  {
+    bool changed = aml_update_amvecm_params();
+    if (changed) {
+      if (!m_resolutionChangeAborted) {
+        if (HELPERS::ShowYesNoDialogText(CVariant{13110}, CVariant{13111}, CVariant{""}, CVariant{""}, 10000) !=
+          DialogResponse::YES)
+        {
+          m_resolutionChangeAborted = true;
+          return false;
+        }
+      }
+      else {
+        m_resolutionChangeAborted = false;
+      }
+    }
   }
 
   return true;

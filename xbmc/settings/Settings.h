@@ -415,11 +415,13 @@ public:
   static constexpr auto SETTING_MASTERLOCK_STARTUPLOCK = "masterlock.startuplock";
   static constexpr auto SETTING_MASTERLOCK_MAXRETRIES = "masterlock.maxretries";
   static constexpr auto SETTING_COREELEC_AMLOGIC_NOISEREDUCTION = "coreelec.amlogic.noisereduction";
-  static constexpr auto SETTING_COREELEC_AMLOGIC_SDR2HDR = "coreelec.amlogic.sdr2hdr";
-  static constexpr auto SETTING_COREELEC_AMLOGIC_HDR2SDR = "coreelec.amlogic.hdr2sdr";
-  static constexpr auto SETTING_COREELEC_AMLOGIC_LIMIT8BIT = "coreelec.amlogic.limit8bit";
-  static constexpr auto SETTING_COREELEC_AMLOGIC_FORCE422 = "coreelec.amlogic.force422";
+  static constexpr auto SETTING_COREELEC_AMLOGIC_COLORDEPTH = "coreelec.amlogic.colordepth";
   static constexpr auto SETTING_COREELEC_AMLOGIC_DISABLEGUISCALING = "coreelec.amlogic.disableguiscaling";
+  static constexpr auto SETTING_COREELEC_AMLOGIC_FORCECOLORFMT = "coreelec.amlogic.forcecolorfmt";
+  static constexpr auto SETTING_COREELEC_AMLOGIC_OUTPUTRANGE = "coreelec.amlogic.outputrange";
+  static constexpr auto SETTING_COREELEC_AMLOGIC_DYNAMICRANGE = "coreelec.amlogic.dynamicrange";
+  static constexpr auto SETTING_COREELEC_AMLOGIC_SDR2HDRMAP = "coreelec.amlogic.sdr2hdrmap";
+  static constexpr auto SETTING_COREELEC_AMLOGIC_HDR2SDRMAP = "coreelec.amlogic.hdr2sdrmap";
   static constexpr auto SETTING_CACHE_HARDDISK = "cache.harddisk";
   static constexpr auto SETTING_CACHEVIDEO_DVDROM = "cachevideo.dvdrom";
   static constexpr auto SETTING_CACHEVIDEO_LAN = "cachevideo.lan";
